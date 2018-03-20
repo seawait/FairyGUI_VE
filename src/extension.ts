@@ -23,6 +23,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     let disposable = vscode.commands.registerCommand('fairygui.batchPublish', async () => {
         try {
+            if(env.isRuning === true){
+                vscode.window.showWarningMessage("正在发布中,请稍候操作");
+                return;
+            }
             let folder:string|undefined = await env.initWorkspace();
             let editorPath:string|undefined = env.editorPath;
             if(editorPath === undefined || editorPath.length === 0 ||
@@ -42,8 +46,10 @@ export function activate(context: vscode.ExtensionContext) {
                     let currentPackIndex: number = 0;
                     let currentPackName: string | undefined;
                     let exitAndNext = function (code: number = 0) {
+                        env.isRuning = true;
                         if (code !== 0 || editorPath === undefined) {
                             vscode.window.showErrorMessage("fairygui发布过程出错.");
+                            env.isRuning = false;
                             reject();
                             return;
                         }
@@ -56,6 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
                             }
                             if(currentPackName === undefined){
                                 vscode.window.showErrorMessage("fairygui发布过程出错,包名为空.");
+                                env.isRuning = false;
                                 reject();
                                 return;
                             }
@@ -63,6 +70,8 @@ export function activate(context: vscode.ExtensionContext) {
                             console.log(`${currentPackName}:(${code}|${Tool.time})`);
                             p.report({ message: `PACK【${basename(currentPackName, '.fairy')}】(${currentPackIndex}/${totalPackNum})` });
                         } else {
+                            env.isRuning = false;
+                            vscode.window.showInformationMessage("发布fairygui项目完成");
                             resolve();
                         }
                     };

@@ -5,6 +5,7 @@ import { basename, dirname } from 'path';
 export class Environment{
     private _editorPath:string|undefined;
     private _defaultProjPath:string|undefined;
+    public isRuning:boolean = false;
 
     public get config():vscode.WorkspaceConfiguration{
         return vscode.workspace.getConfiguration('fairygui');

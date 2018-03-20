@@ -5,5 +5,7 @@
     },
     "search.exclude": {
         "out": true // set this to false to include "out" folder in search results
-    }
+    },
+    "fairygui.editorPath": "D:\\program\\FairyGUI-Editor\\FairyGUI-Editor.exe",
+    "fairygui.defaultProjectPath": "D:\\work\\TexasPublic\\Texas-H5\\src\\asset"
 }

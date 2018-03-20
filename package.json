@@ -1,0 +1,65 @@
+{
+    "name": "fairyguive",
+    "displayName": "FairyguiExtension",
+    "description": "FairyGUI editor extension",
+    "version": "0.0.1",
+    "publisher": "x8087",
+    "icon": "images/icon.jpg",
+    "license": "SEE LICENSE IN LICENSE",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/seawait/FairyGUI_VE.git"
+    },
+    "engines": {
+        "vscode": "^1.21.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "FairyGUI",
+        "FUI",
+        "Package"
+    ],
+    "activationEvents": [
+        "*",
+        "onCommand:fairygui.batchPublish"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "fairygui.batchPublish",
+                "title": "FairyGUI Batch Publish"
+            }
+        ]
+    },
+    "configuration":{
+        "type": "object",
+        "title": "FairyGUI Extension",
+        "properties":{
+            "fairygui.editorPath":{
+                "type":"string",
+                "description": "FairyGUI编辑器路径"
+            },
+            "fairygui.defaultProjectPath":{
+                "type":"string",
+                "description": "可选, 默认FairyGUI项目文件夹。设置后如果点击fui按钮，扩展直接搜索该文件夹下的*.fairy文件进行发布"
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
+        "tslint": "^5.8.0",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42"
+    }
+}

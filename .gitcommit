@@ -1,0 +1,52 @@
+# <类型>: (类型的值见下面描述) <主题> (最多50个字)
+#:bulb:ADD: 
+#:bug:FIX: 
+#:rocket:OPTIMIZE: 
+#:recycle:REMOVE: 
+#:memo:DOC: 
+#:date:TODO: 
+#:pencil2:LOG: 
+#:page_facing_up:FORMAT: 
+#:chart_with_upwards_trend:TEST: 
+#:package:PACK: 
+#:globe_with_meridians:INT: 
+#:wrench:CONF: 
+#123456789|123456789|123456789|123456789|123456789
+
+# 解释为什么要做这些改动
+# |<----  请限制每行最多72个字   ---->|
+#123456789|123456789|123456789|123456789|123456789|123456789|123456789|1
+
+# 提供相关文章和其它资源的链接和关键字
+# 例如: Github issue #23
+
+# --- 提交 结束 ---
+# 类型值包含
+#   :bulb:ADD: (新特性)
+#   :bug:FIX: (bug修复)
+#   :rocket:OPTIMIZE: (优化或重构代码)
+#   :recycle:REMOVE: (清理或移除无用提交)
+#   :memo:DOC: (文档改动)
+#   :pencil2:LOG: (记录)
+#   :page_facing_up:FORMAT: (格式化, 缺失分号等;不包括生产代码变动)
+#   :chart_with_upwards_trend:TEST: (添加缺失的测试,重构测试,不包括生产代码变动)
+#   :package:PACK: (更新grunt任务等;打包相关,不包括生产代码变动)
+#   :globe_with_meridians:INT: (国际化相关)
+#   :wrench:CONF: (生产环境或配置修改)
+# --------------------
+# 注意
+#    主题和内容以一个空行分隔
+#    主题限制为最大50个字
+#    主题行大写
+#    主题行结束不用标点
+#    主题行使用祈使名
+#    内容每行72个字
+#    内容用于解释为什么和是什么,而不是怎么做
+#    内容多行时以'-'分隔
+# --------------------
+# 添加模板命令：
+# git config --global commit.template <.git-commit-template.txt file path>
+# For example, if you saved it to your home folder, try:
+# git config --global commit.template ~/.git-commit-template.txt
+# 模板更多信息详见下面地址
+# https://gist.github.com/adeekshith/cd4c95a064977cdc6c50

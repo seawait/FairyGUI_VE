@@ -32,19 +32,19 @@
                 "command": "fairygui.batchPublish",
                 "title": "FairyGUI Batch Publish"
             }
-        ]
-    },
-    "configuration":{
-        "type": "object",
-        "title": "FairyGUI Extension",
-        "properties":{
-            "fairygui.editorPath":{
-                "type":"string",
-                "description": "FairyGUI编辑器路径"
-            },
-            "fairygui.defaultProjectPath":{
-                "type":"string",
-                "description": "可选, 默认FairyGUI项目文件夹。设置后如果点击fui按钮，扩展直接搜索该文件夹下的*.fairy文件进行发布"
+        ],
+        "configuration":{
+            "type": "object",
+            "title": "FairyGUI Extension",
+            "properties":{
+                "fairygui.editorPath":{
+                    "type":"string",
+                    "description": "FairyGUI编辑器路径"
+                },
+                "fairygui.defaultProjectPath":{
+                    "type":"string",
+                    "description": "可选, 默认FairyGUI项目文件夹。设置后如果点击fui按钮，扩展直接搜索该文件夹下的*.fairy文件进行发布"
+                }
             }
         }
     },

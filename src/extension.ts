@@ -43,7 +43,7 @@ export function activate(context: vscode.ExtensionContext) {
                     let currentPackName: string | undefined;
                     let exitAndNext = function (code: number = 0) {
                         if (code !== 0 || editorPath === undefined) {
-                            vscode.window.showErrorMessage("fairygui发布过程出错.")
+                            vscode.window.showErrorMessage("fairygui发布过程出错.");
                             reject();
                             return;
                         }
@@ -55,7 +55,7 @@ export function activate(context: vscode.ExtensionContext) {
                                 currentPackName = cmdStr.pop();
                             }
                             if(currentPackName === undefined){
-                                vscode.window.showErrorMessage("fairygui发布过程出错,包名为空.")
+                                vscode.window.showErrorMessage("fairygui发布过程出错,包名为空.");
                                 reject();
                                 return;
                             }

@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { Tool } from './core/Tool';
-import { spawn } from 'child_process';
+import { spawn, ChildProcess } from 'child_process';
 import env from './core/Environment';
 import { basename } from 'path';
 
@@ -27,26 +27,31 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.window.showWarningMessage("正在发布中,请稍候操作");
                 return;
             }
+            env.isRuning = true;
             let folder:string|undefined = await env.initWorkspace();
             let editorPath:string|undefined = env.editorPath;
             if(editorPath === undefined || editorPath.length === 0 ||
                 folder === undefined || folder.length === 0){
                 vscode.window.showErrorMessage("fairygui扩展配置项设置错误!");
+                env.isRuning = false;
                 return;
             }
             let cmdStr: string[] = Tool.getDirFiles(folder);
             if (cmdStr.length === 0) {
                 env.defaultProjPath = undefined;
                 vscode.window.showErrorMessage("找不到fairygui项目文件!");
+                env.isRuning = false;
                 return;
             }
+            // vscode.window.showInformationMessage("开始发布");
             vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: PACK_LABEL }, p => {
                 return new Promise((resolve, reject) => {
                     let totalPackNum: number = cmdStr.length;
                     let currentPackIndex: number = 0;
                     let currentPackName: string | undefined;
+                    // vscode.window.showInformationMessage(`显示进度${cmdStr.toString()}`);
                     let exitAndNext = function (code: number = 0) {
-                        env.isRuning = true;
+                        // vscode.window.showInformationMessage(`进度:${code},${currentPackIndex}/${totalPackNum}`);
                         if (code !== 0 || editorPath === undefined) {
                             vscode.window.showErrorMessage("fairygui发布过程出错.");
                             env.isRuning = false;
@@ -66,7 +71,18 @@ export function activate(context: vscode.ExtensionContext) {
                                 reject();
                                 return;
                             }
-                            spawn(editorPath, ['-p', currentPackName]).on('close', exitAndNext);
+                            // vscode.window.showInformationMessage(`进度:${currentPackName}`);
+                            let childPro:ChildProcess = spawn(editorPath, ['-p', currentPackName]);
+                            childPro.on('close', ()=>setTimeout(exitAndNext, 300));
+                            childPro.stderr.on('data', ($data)=>{
+                                vscode.window.showInformationMessage(`执行子程序错误:${currentPackName},${$data}`);
+                            });
+                            childPro.stdout.on('data', ($data)=>{
+                                vscode.window.showInformationMessage(`执行子程序输出:${currentPackName},${$data}`);
+                            });
+                            childPro.on('error', ($err)=>{
+                                vscode.window.showInformationMessage(`执行子程序错误1:${currentPackName},${$err}`);
+                            });
                             console.log(`${currentPackName}:(${code}|${Tool.time})`);
                             p.report({ message: `PACK【${basename(currentPackName, '.fairy')}】(${currentPackIndex}/${totalPackNum})` });
                         } else {

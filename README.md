@@ -15,7 +15,7 @@
 
 ## Requirements
 
-无
+需要安装fairygui编辑器
 
 ## Extension Settings
 
@@ -24,7 +24,8 @@
 
 ## Known Issues
 
-无
+* 发布前需要关闭fairygui编辑器, 否则会影响当前编辑器实例.
+* 编辑器与项目地址不允许有空格, 否则有可能导致发布失败.
 
 ## Release Notes
 

@@ -8,6 +8,12 @@ Added Changed Removed Fixed
 
 ## [Unreleased]
 
+## [0.0.5] - 2018-06-29
+
+### Added
+
+- 发布时文件没有改变的资源包不重新发布, 减少发布时间
+
 ## [0.0.4] - 2018-03-20
 
 ### Fixed
@@ -25,6 +31,7 @@ Added Changed Removed Fixed
 
 - 实现批量发布fairygui项目功能
 
-[Unreleased]: https://github.com/seawait/DynamicTemplate/compare/v0.0.4...HEAD
+[Unreleased]: https://github.com/seawait/DynamicTemplate/compare/v0.0.5...HEAD
+[0.0.5]: https://github.com/seawait/DynamicTemplate/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/seawait/DynamicTemplate/compare/v0.0.1...v0.0.4
 [0.0.1]: https://github.com/seawait/DynamicTemplate/compare/v0.0.0...v0.0.1

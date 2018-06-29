@@ -2,7 +2,7 @@
     "name": "fairyguive",
     "displayName": "FairyguiExtension",
     "description": "FairyGUI editor extension",
-    "version": "0.0.5",
+    "version": "0.0.7",
     "publisher": "x8087",
     "icon": "images/icon.jpg",
     "license": "SEE LICENSE IN LICENSE",

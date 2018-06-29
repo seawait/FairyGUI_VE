@@ -1,5 +1,6 @@
-import { readdirSync, lstatSync, Stats } from "fs";
-import { extname, join } from "path";
+import { readdirSync, lstatSync, Stats, readFileSync, existsSync, writeFileSync, } from "fs";
+import { extname, join, dirname } from "path";
+import { createHash } from "crypto";
 
 export class Tool{
 
@@ -16,7 +17,69 @@ export class Tool{
         return new Date().toTimeString();
     }
 
-    public static getDirFiles($dir:string):string[]{
+    public static getMD5Caches($dir:string, cache:any, unchanged:boolean=true):boolean{
+        let files:string[] = readdirSync($dir);
+        files.forEach((file)=>{
+            let fileName:string = join($dir, file);
+            let stats:Stats = lstatSync(fileName);
+            let newHash:string;
+            if(stats.isFile()){
+                newHash = createHash('sha1').update(readFileSync(fileName)).digest('hex');
+                if(unchanged && (!cache[fileName] || cache[fileName] !== newHash)){
+                    unchanged = false;
+                }
+                cache[fileName] = newHash;
+            }else if(stats.isDirectory() && file[0] !== '.'){
+                if(unchanged){
+                    unchanged = Tool.getMD5Caches(fileName, cache, unchanged);
+                }else{
+                    Tool.getMD5Caches(fileName, cache, unchanged);
+                }
+            }
+
+        });
+        return unchanged;
+    }
+
+    public static getProjPackChanged($proj:string):string[]|null{
+        let resultPack:string[] = [];
+        if(!existsSync($proj) || extname($proj) !== '.fairy'){
+            return resultPack;
+        }
+        let confStr:string = join(dirname($proj), '.objs', 'fcache.json');
+        let data:any;
+        if(existsSync(confStr)){
+            data = JSON.parse(readFileSync(confStr, 'utf8'));
+        }else{
+            data = {};
+        }        
+        let assetsURI:string = join(dirname($proj), 'assets'), packages:string[];
+        if(existsSync(assetsURI)){
+            packages = readdirSync(assetsURI);
+            packages.forEach((pkg)=>{
+            if(pkg[0] !== '.' && Tool.getMD5Caches(join(assetsURI, pkg), data, true) === false){
+                resultPack.push(pkg);
+            } 
+            });
+        }
+        // let unchanged:boolean = Tool.getMD5Caches(dirname($proj), data, true);
+        if(Tool.getMD5Caches(join(dirname($proj), 'settings'), data, true) === false){
+            writeFileSync(confStr, JSON.stringify(data), 'utf8');
+            return null;
+        }else{
+            writeFileSync(confStr, JSON.stringify(data), 'utf8');
+        }
+        return resultPack;
+    }
+
+    public static getFairyPackageFiles($proj:string):string[]|null{
+        if(!existsSync(join(dirname($proj), 'assets')) || !existsSync($proj) || extname($proj) !== '.fairy'){
+            return null;
+        }
+        return readdirSync(join(dirname($proj), 'assets'));
+    }
+
+    public static getFairyProjFiles($dir:string):string[]{
         let files:string[] = readdirSync($dir);
         let folder:string[] = [];
         let fairyFiles:string[] = [];
@@ -32,7 +95,7 @@ export class Tool{
             return false;
         }) === false) {
             folder.forEach((file)=>{
-                fairyFiles = fairyFiles.concat(Tool.getDirFiles(file));
+                fairyFiles = fairyFiles.concat(Tool.getFairyProjFiles(file));
             });
         }
         return fairyFiles;

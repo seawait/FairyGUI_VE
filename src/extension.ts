@@ -36,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
                 env.isRuning = false;
                 return;
             }
-            let cmdStr: string[] = Tool.getDirFiles(folder);
+            let cmdStr: string[] = Tool.getFairyProjFiles(folder);
             if (cmdStr.length === 0) {
                 env.defaultProjPath = undefined;
                 vscode.window.showErrorMessage("找不到fairygui项目文件!");
@@ -71,8 +71,19 @@ export function activate(context: vscode.ExtensionContext) {
                                 reject();
                                 return;
                             }
+                            let pkgs:string[]|null = Tool.getProjPackChanged(currentPackName);
+                            let args:string[] = ['-p', currentPackName];
+                            if(pkgs !== null){
+                                if(pkgs.length === 0){
+                                    exitAndNext();
+                                    return;
+                                }else{
+                                    args.push('-b');
+                                    args.push(pkgs.join(','));
+                                }
+                            }
                             // vscode.window.showInformationMessage(`进度:${currentPackName}`);
-                            let childPro:ChildProcess = spawn(editorPath, ['-p', currentPackName]);
+                            let childPro:ChildProcess = spawn(editorPath, args);
                             childPro.on('close', ()=>setTimeout(exitAndNext, 300));
                             childPro.stderr.on('data', ($data)=>{
                                 vscode.window.showInformationMessage(`执行子程序错误:${currentPackName},${$data}`);

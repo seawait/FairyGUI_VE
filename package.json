@@ -2,7 +2,7 @@
     "name": "fairyguive",
     "displayName": "FairyguiExtension",
     "description": "FairyGUI editor extension",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "publisher": "x8087",
     "icon": "images/icon.jpg",
     "license": "SEE LICENSE IN LICENSE",
@@ -61,5 +61,8 @@
         "tslint": "^5.8.0",
         "@types/node": "^7.0.43",
         "@types/mocha": "^2.2.42"
+    },
+    "dependencies": {
+        "crypto": "^1.0.1"
     }
 }
